@@ -6,12 +6,12 @@ import { twitterLogin, twitterLogout } from '../actions';
 
 
 const mapStateToProps = state => ({
-  auth: state.auth.loggedIn,
+  loggedIn: state.auth.loggedIn,
   user: state.auth.user,
 });
 
 const mapDispatchToProps = dispatch => ({
-  twitterLogin: token => dispatch(twitterLogin(token)),
+  twitterLogin: () => dispatch(twitterLogin()),
   twitterLogout: () => dispatch(twitterLogout()),
 });
 

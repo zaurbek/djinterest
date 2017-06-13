@@ -6,6 +6,9 @@
   "repository": "https://github.com/zzhakupov/ginterest.git",
   "author": "Zaurbek <zoollhub@gmail.com>",
   "license": "MIT",
+  "scripts":{
+    "webpack-d":"webpack --progress --colors --watch"
+  },
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.0.0",
@@ -26,11 +29,19 @@
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "express-session": "^1.15.3",
     "js-cookie": "^2.1.4",
     "mongodb": "^2.2.28",
     "mongoose": "^4.10.4",
+    "morgan": "^1.8.2",
     "node-twitter-api": "^1.8.0",
+    "passport": "^0.3.2",
+    "passport-twitter": "^1.0.4",
     "prop-types": "^15.5.10",
     "query-string": "^4.3.4",
     "randomstring": "^1.1.5",

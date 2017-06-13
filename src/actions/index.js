@@ -4,8 +4,8 @@ import Cookies from 'js-cookie';
 
 // ===================Login=============================
 
-function twitterFetch(token) {
-  return axios.get(`https://api.twitter.com/user?access_token=${token}`);
+function twitterFetch() {
+  return axios.get('/api/user_data');
 }
 
 export const USER_DATA = 'USER_DATA';
@@ -18,10 +18,13 @@ function twitterPlace(userData) {
 }
 
 
-export function twitterLogin(token) {
-  return dispatch => twitterFetch(token).then(res => res.data).then((data) => {
+export function twitterLogin() {
+  return dispatch => twitterFetch().then(res => res.data).then(data => {
     console.log(data);
-    return dispatch(twitterPlace(data));
+    if (data.error!=='User is not logged in') {
+      return dispatch(twitterPlace(data));  
+    }
+    
   });
 }
 
