@@ -22,7 +22,7 @@ export function twitterLogin() {
   return dispatch => twitterFetch().then(res => res.data).then(data => {
     console.log(data);
     if (data.error!=='User is not logged in') {
-      return dispatch(twitterPlace(data));  
+      return dispatch(twitterPlace(data));
     }
     
   });

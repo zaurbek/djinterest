@@ -1,4 +1,16 @@
-$main: #333;
-html {
-  color: $main;
+.djin-card {
+  margin: 5px !important;
+  width: 226px !important;
+  img {
+    width: auto;
+    height: auto;
+    margin: 20px;
+  }
+}
+
+.ui.menu {
+  border-radius: 0 !important;
+}
+.djins-div {
+  margin: 0 30px;
 }

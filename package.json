@@ -6,8 +6,8 @@
   "repository": "https://github.com/zzhakupov/ginterest.git",
   "author": "Zaurbek <zoollhub@gmail.com>",
   "license": "MIT",
-  "scripts":{
-    "webpack-d":"webpack --progress --colors --watch"
+  "scripts": {
+    "webpack-d": "webpack --progress --colors --watch"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -47,6 +47,7 @@
     "randomstring": "^1.1.5",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-masonry-component": "^5.0.7",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
