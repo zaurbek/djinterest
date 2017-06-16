@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 
 // ===================Login=============================
@@ -19,12 +18,11 @@ function twitterPlace(userData) {
 
 
 export function twitterLogin() {
-  return dispatch => twitterFetch().then(res => res.data).then(data => {
+  return dispatch => twitterFetch().then(res => res.data).then((data) => {
     console.log(data);
-    if (data.error!=='User is not logged in') {
+    if (data.error !== 'User is not logged in') {
       return dispatch(twitterPlace(data));
     }
-    
   });
 }
 
@@ -37,4 +35,27 @@ export function twitterLogout(history) {
   return {
     type: USER_LOGOUT,
   };
+}
+
+// ===================Submit Djin==============================
+export const NEW_DJIN = 'NEW_DJIN';
+
+const placeDjin = object => ({
+  type: NEW_DJIN,
+  payload: object,
+});
+
+export const submitDjin = object => (dispatch) => {
+  dispatch(placeDjin(object));
+  axios.post('/api/djin/submit', object).then(res => res.data).then((data) => {
+    console.log(data);
+  });
+};
+// ============================================================
+// fetch User Board 
+
+export const fetchUserBoard = id => dispatch => {
+  axios.get(`/api/djin/board?id=${id}`).then(res=>res.data).then(data=>{
+    console.log(data);
+  })
 }

@@ -7,28 +7,32 @@ import Masonry from 'react-masonry-component';
 import Djin from './Djin.jsx';
 
 class FrontPage extends Component {
-
   render() {
-      let childElements = this.props.djins.map((element,index) => (
-                <Djin data={element} />
-            ));
-      return (
-          <div>
-              <Masonry
-                  className={'djins-div'} // default ''
-                  updateOnEachImageLoad={true}
-                >
-                  {childElements}
-                </Masonry>
-              <Container text>
-              <hr />
-              <h4 className="ui right aligned tiny header">
-                  <a href="https://github.com/zzhakupov/react-book-club" target="_blank">@zzhakupov</a>
-              </h4>
-              </Container>
-            </div>
-        );
-    }
+    let djins = this.props.djins.map((item, index) => (
+      <Djin data={item} key={item.id}/>
+    ));
+    return (
+      <div>
+        <Masonry
+          className={'djins-div'} // default ''
+          updateOnEachImageLoad
+        >
+          {djins}
+        </Masonry>
+        <Container text>
+          <hr />
+          <h4 className="ui right aligned tiny header">
+            <a
+              href="https://github.com/zzhakupov/react-book-club"
+              target="_blank"
+            >
+              @zzhakupov
+            </a>
+          </h4>
+        </Container>
+      </div>
+    );
+  }
 }
 
 FrontPage.propTypes = {

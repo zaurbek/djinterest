@@ -4,9 +4,8 @@ let initialStore = {
     loggedIn: false,
   },
   djins: {
-    items: ['','','','','','','','','','']
-  }
-}
-
+    items: [],
+  },
+};
 
 export default initialStore;

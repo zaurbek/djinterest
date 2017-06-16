@@ -1,18 +1,34 @@
+// ============================================================
+// Express
 const express = require('express');
 const app = express();
-const path = require('path');
-
-require('dotenv').config();
-
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
-
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
-
 const PORT = process.env.PORT || 8080;
 
+
+// ============================================================
+// .env
+require('dotenv').config();
+
+
+// ============================================================
+// path
+const path = require('path');
+
+
+// ============================================================
+// DB
+const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
+mongoose.connect(process.env.REMOTE_DB);
+
+const Pin = require('./src/model/Pin');
+
+
+// ============================================================
+// Passport.js
 const passport = require('passport');
 const passportTwitter = require('passport-twitter');
 const TwitterStrategy = passportTwitter.Strategy;
@@ -31,15 +47,36 @@ passport.deserializeUser((obj, cb) => {
   cb(null, obj);
 });
 
-app.use('/', express.static(`${__dirname}/public`));
 
+// ============================================================
+app.use('/', express.static(`${__dirname}/public`));
+app.use('/user', express.static(`${__dirname}/public`));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressSession({ secret: ':CWPE2rcom4kms09c54gmalsdfCFAipoamdaismcpqw', resave: true, saveUninitialized: true }));
-
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+// ============================================================
+// routes
+app.get('/api/djin/board', (req, res) => {
+  console.log(req.query);
+
+  res.send(req.query);
+});
+
+app.post('/api/djin/submit', (req, res) => {
+  console.log(req.body);
+  const newPin = new Pin(req.body);
+  newPin.save(() => {
+    Pin.findOne({ id: req.body.id }).then((singleNode) => {
+      console.log(singleNode);
+      res.send(singleNode);
+    });
+  });
+});
 
 app.get('/api/user_data', (req, res) => {
   if (req.user === undefined) {
@@ -49,6 +86,8 @@ app.get('/api/user_data', (req, res) => {
   }
 });
 
+// ============================================================
+// auth routes
 app.get('/login/twitter', passport.authenticate('twitter'));
 
 app.get('/login/twitter/return', passport.authenticate('twitter', { failureRedirect: '/' }), (req, res) => {
@@ -61,7 +100,9 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.get('*', (req, res) => {
+
+// ============================================================
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 

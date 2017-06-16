@@ -10,5 +10,4 @@ const mapStateToProps = state => ({
 
 const FrontPageWrapped = connect(mapStateToProps, null)(FrontPage);
 
-
 export default FrontPageWrapped;

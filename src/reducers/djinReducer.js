@@ -1,10 +1,11 @@
-export default (state = {}, action) => {
-    switch (action.type) {
-        case 'DJIN_DATA':
-            return {
-                items:action.payload
-            }
-        default:
-            return state;
-    }
+export default (state = {items: []}, action) => {
+  switch (action.type) {
+    case 'NEW_DJIN':
+      return {
+        items: [...state.items,action.payload]
+      };
+
+    default:
+      return state;
+  }
 };

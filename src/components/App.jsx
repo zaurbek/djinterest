@@ -6,6 +6,7 @@ import axios from 'axios';
 import FrontPage from '../containers/FrontPage.jsx';
 import TopMenu from '../containers/TopMenu.jsx';
 import Page404 from './UnknownPage.jsx';
+import UserPage from '../containers/UserPage.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -13,27 +14,30 @@ class App extends Component {
   }
   componentDidMount() {
     if (!this.props.loggedIn) {
-        this.props.twitterLogin();
+      this.props.twitterLogin();
     }
   }
   render() {
     return (
-      <div><Router>
-                <div>
-                <Route component={TopMenu} />
+      <div>
+        <Router>
+          <div>
+            <Route component={TopMenu} />
             <Switch>
-            <Route exact path="/" component={FrontPage} />
-            <Route component={Page404}/> 
+              <Route exact path="/" component={FrontPage} />
+              <Route path="/user/:id" component={UserPage} />
+              <Route component={Page404} />
             </Switch>
-            </div>
-            </Router></div>
-    )
+          </div>
+        </Router>
+      </div>
+    );
   }
 }
 
 App.propTypes = {
   loggedIn: PropTypes.bool,
   twitterLogin: PropTypes.func.isRequired,
-}
+};
 
 export default App;
