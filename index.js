@@ -41,7 +41,7 @@ passport.use(new TwitterStrategy({
 
 passport.serializeUser((user, cb) => {
   cb(null, user);
-});
+})
 
 passport.deserializeUser((obj, cb) => {
   cb(null, obj);
