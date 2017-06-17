@@ -7,14 +7,8 @@ const PinSchema = new Schema({
     creatorName: String,
     creatorId: String,
     id: String,
-    likes: {
-        by: Array,
-        amount: Number
-    },
-    pins: {
-        by: Array,
-        amount: Number
-    }
+    likes: Array,
+    pins: Array,
 })
 
 

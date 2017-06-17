@@ -41,7 +41,7 @@ passport.use(new TwitterStrategy({
 
 passport.serializeUser((user, cb) => {
   cb(null, user);
-})
+});
 
 passport.deserializeUser((obj, cb) => {
   cb(null, obj);
@@ -61,19 +61,58 @@ app.use(passport.session());
 
 // ============================================================
 // routes
-app.get('/api/djin/board', (req, res) => {
-  console.log(req.query);
+app.post('/api/djin/pin', (req,res)=>{
+  Pin.findOne({id: req.body.id}).then(singleNode=>{
+    if (singleNode.pins.indexOf(req.body.person)<0) {
+      Pin.findOneAndUpdate({id: req.body.id},{$push:{pins: req.body.person }},{ returnNewDocument: true }).then(updatedNode=>{
+        console.log('if already wasn"t present');
+        console.log(updatedNode);
+        res.send(updatedNode);
+      })
+    } else {
+      Pin.findOneAndUpdate({id: req.body.id}, { $pullAll: { pins: [req.body.person] } }, { returnNewDocument: true }).then(updatedNode=>{
+        console.log('if already was present');
+        console.log(updatedNode);
+        res.send(updatedNode);
+      })
+    } 
+  })
+})
 
-  res.send(req.query);
+
+app.post('/api/djin/delete', (req,res)=> {
+  Pin.remove({id:req.body.id+'asdasd'},(err,result)=>{
+    if (err) {
+      console.log(err);
+    }
+    res.send(result);
+  })
+})
+
+app.get('/api/djin/all', (req, res) => {
+  Pin.find({}).limit(200).sort({_id:-1}).then((completeBoard) => {
+      res.send(completeBoard);
+    });
+})
+
+app.get('/api/djin/board', (req, res) => {
+  Pin.find({ $or: [{ creatorId: req.query.id },
+                  { pins: { $in: [req.query.id] } }] 
+             }).then((authorsBoard) => {
+      console.log(authorsBoard);
+      res.send(authorsBoard);
+    });
 });
 
 app.post('/api/djin/submit', (req, res) => {
   console.log(req.body);
   const newPin = new Pin(req.body);
   newPin.save(() => {
-    Pin.findOne({ id: req.body.id }).then((singleNode) => {
-      console.log(singleNode);
-      res.send(singleNode);
+    Pin.find({ $or: [{ creatorId: req.body.creatorId },
+                     { pins: { $in: [req.body.creatorId] } }
+                    ]}).then((authorsBoard) => {
+      console.log(authorsBoard);
+      res.send(authorsBoard);
     });
   });
 });

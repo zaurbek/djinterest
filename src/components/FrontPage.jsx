@@ -7,18 +7,21 @@ import Masonry from 'react-masonry-component';
 import Djin from './Djin.jsx';
 
 class FrontPage extends Component {
+  componentDidMount() {
+    this.props.fetchWholeBoard();
+  }
   render() {
     let djins = this.props.djins.map((item, index) => (
-      <Djin data={item} key={item.id}/>
+      <Djin data={item} pinDjin={this.props.pinDjin} likeDjin={this.props.likeDjin} user={this.props.user} auth={this.props.loggedIn} deleteDjin={this.props.deleteDjin} key={item.id}/>
     ));
     return (
       <div>
         <Masonry
-          className={'djins-div'} // default ''
+          className='djins-div'
           updateOnEachImageLoad
         >
           {djins}
-        </Masonry>
+        </Masonry >
         <Container text>
           <hr />
           <h4 className="ui right aligned tiny header">
@@ -37,7 +40,12 @@ class FrontPage extends Component {
 
 FrontPage.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
+  user: PropTypes.object,
   djins: PropTypes.array,
+  fetchWholeBoard: PropTypes.func.isRequired,
+  deleteDjin: PropTypes.func.isRequired,
+  likeDjin: PropTypes.func.isRequired,
+  pinDjin: PropTypes.func.isRequired,
 };
 
 export default FrontPage;

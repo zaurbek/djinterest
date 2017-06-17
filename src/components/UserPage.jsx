@@ -7,20 +7,19 @@ import Masonry from 'react-masonry-component';
 import Djin from './Djin.jsx';
 
 class UserPage extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     this.props.fetchUserBoard(this.props.history.location.pathname.slice(6));
   }
   render() {
-    let djins = this.props.djins.map((item, index) => {
-      return <Djin key={item.id} data={item} user={this.props.user}/>;
+    let djins = this.props.djins.map((item) => {
+      if (item.creatorId === this.props.history.location.pathname.slice(6)||item.pins.indexOf(this.props.history.location.pathname.slice(6))>-1) {
+        return <Djin pinDjin={this.props.pinDjin} likeDjin={this.props.likeDjin} deleteDjin={this.props.deleteDjin} key={item.id} auth={this.props.loggedIn} data={item} user={this.props.user}/>;  
+        
+      }
     });
-    console.log(this.props.history.location.pathname.slice(6));
     return (
       <div>
-        <Masonry className={'djins-div'} updateOnEachImageLoad>
+        <Masonry className='djins-div' updateOnEachImageLoad>
           {this.props.user.id===this.props.history.location.pathname.slice(6)?<Djin data="new" user={this.props.user} submitDjin={(object)=>this.props.submitDjin(object)}/>:null}
           {djins}
         </Masonry>
@@ -46,6 +45,9 @@ UserPage.propTypes = {
   djins: PropTypes.array,
   submitDjin: PropTypes.func.isRequired,
   fetchUserBoard: PropTypes.func.isRequired,
+  deleteDjin: PropTypes.func.isRequired,
+  likeDjin: PropTypes.func.isRequired,
+  pinDjin: PropTypes.func.isRequired,
 };
 
 export default UserPage;

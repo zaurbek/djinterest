@@ -26,7 +26,7 @@ class TopMenu extends Component {
             : null}
           {this.props.loggedIn
             ? <Menu.Item>
-              <Link to={`/user/${this.props.user.id}`}>My djins</Link>
+              <a href={`/user/${this.props.user.id}`}>My djins</a>
             </Menu.Item>
             : null}
           {this.props.loggedIn

@@ -31,15 +31,9 @@ class Djin extends Component {
         creatorName: this.props.user.displayName,
         creatorId: this.props.user.id,
         id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-        likes: {
-          by: [],
-          amount:0,
-        },
-        pins: {
-          by: [],
-          amount: 0
-        }
-
+        likes: [],
+        pins: [],
+        isLoading: false,
       });
       this.clearModal();
     }
@@ -56,7 +50,8 @@ class Djin extends Component {
       modalOpen: true
     })
   }
-  addDefaultSrc = (e) => {
+  onError = (e) => {
+    console.log('asdfsadcqwecLOOOOOOOOOOOL');
     e.target.src='https://developers.google.com/maps/documentation/static-maps/images/error-image-generic.png';
   }
   render() {
@@ -93,7 +88,7 @@ class Djin extends Component {
               Add new Djin:
             </Modal.Header>
             <Modal.Content>
-              <Image
+              <Image 
                 centered
                 size="medium"
                 className="modal-img"
@@ -130,18 +125,21 @@ class Djin extends Component {
     }
     return (
       <Card className="djin-card" raised>
-        <Image onError={this.addDefaultSrc} src={this.props.data.image} />
+        <img className='ui image' onError={(e)=>this.onError(e)} src={this.props.data.image} />
         <Card.Content>
           <Card.Header>{this.props.data.title}</Card.Header>
-          <Card.Meta><Link to={`/user/${this.props.data.creatorId}`} className='card-link' >{this.props.data.creatorName}</Link></Card.Meta>
-          <Button size="mini" color="olive" floated="right">
+          <Card.Meta><a href={`/user/${this.props.data.creatorId}`} className='card-link' >{this.props.data.creatorName}</a></Card.Meta>
+          {this.props.auth?<div>
+          <Button loading={this.props.data.isLoading} onClick={()=>this.props.pinDjin(this.props.user.id, this.props.data.id)} disabled={this.props.data.creatorId===this.props.user.id} size="mini" color="olive" floated="right">
             <i className="right-space fa fa-retweet" aria-hidden="true" />
-            {this.state.repins}
+            {this.props.data.pins.length}
           </Button>
-          <Button size="mini" color="teal" floated="right">
+          <Button loading={this.props.data.isLoading} onClick={()=>this.props.likeDjin(this.props.user.id, this.props.data.id)} size="mini" color="teal" floated="right">
             <i className="right-space fa fa-thumbs-o-up" aria-hidden="true" />
-            {this.state.likes}
+            {this.props.data.likes.length}
           </Button>
+          {this.props.data.creatorId===this.props.user.id?<Button onClick={()=>this.props.deleteDjin(this.props.data.id)}inverted icon='x' circular size='mini' color='red' floated='left'/>:null}
+          </div>:null}
         </Card.Content>
       </Card>
     );
