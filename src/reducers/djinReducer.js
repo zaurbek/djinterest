@@ -24,12 +24,10 @@ export default (state = {items: []}, action) => {
           if (item.id === action.payload.id) {
             item.isLoading = true;
             if (item.pins.indexOf(action.payload.person)>-1) {
-              console.log('name is in');
               item.pins.splice(item.pins.indexOf(action.payload.person), 1);
               
               return item;  
             } else {
-              console.log('name is not in array')
               item.pins.push(action.payload.person);
               return item;
             }
@@ -43,6 +41,35 @@ export default (state = {items: []}, action) => {
           item.isLoading = false;
           if (item.id===action.payload.id) {
             item.pins = action.payload.pins;
+            return item;
+          }
+          return item;
+        })
+      }
+    case 'TRY_LIKE_UPDATE':
+      return {
+        items: state.items.map(item=>{
+          
+          if (item.id === action.payload.id) {
+            item.isLoading = true;
+            if (item.likes.indexOf(action.payload.person)>-1) {
+              item.likes.splice(item.likes.indexOf(action.payload.person), 1);
+              
+              return item;  
+            } else {
+              item.likes.push(action.payload.person);
+              return item;
+            }
+          }
+          return item;
+        })
+      }
+    case 'UPDATE_DJIN_LIKE':
+      return {
+        items: state.items.map(item=>{
+          item.isLoading = false;
+          if (item.id===action.payload.id) {
+            item.likes = action.payload.pins;
             return item;
           }
           return item;

@@ -51,7 +51,6 @@ class Djin extends Component {
     })
   }
   onError = (e) => {
-    console.log('asdfsadcqwecLOOOOOOOOOOOL');
     e.target.src='https://developers.google.com/maps/documentation/static-maps/images/error-image-generic.png';
   }
   render() {

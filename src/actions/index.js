@@ -19,22 +19,10 @@ function twitterPlace(userData) {
 
 export function twitterLogin() {
   return dispatch => twitterFetch().then(res => res.data).then((data) => {
-    console.log(data);
     if (data.error !== 'User is not logged in') {
       return dispatch(twitterPlace(data));
     }
   });
-}
-
-// ===================Logout==============================
-export const USER_LOGOUT = 'USER_LOGOUT';
-
-export function twitterLogout(history) {
-  Cookies.remove('token');
-  history.push('/');
-  return {
-    type: USER_LOGOUT,
-  };
 }
 
 // ===================Submit Djin==============================
@@ -55,7 +43,7 @@ const placeItems = arrayOfBoard => ({
 export const submitDjin = object => (dispatch) => {
   dispatch(placeDjin(object));
   axios.post('/api/djin/submit', object).then(res => res.data).then((data) => {
-    console.log(data);
+    
     dispatch(placeItems(data));
   });
 };
@@ -64,7 +52,7 @@ export const submitDjin = object => (dispatch) => {
 
 export const fetchUserBoard = id => dispatch => {
   axios.get(`/api/djin/board?id=${id}`).then(res=>res.data).then(data=>{
-    console.log(data);
+    
     dispatch(placeItems(data));
   })
 }
@@ -74,7 +62,7 @@ export const fetchUserBoard = id => dispatch => {
 
 export const fetchWholeBoard = () => dispatch => {
   axios.get('/api/djin/all').then(res=>res.data).then(data=>{
-    console.log(data);
+    
     dispatch(placeItems(data));
   })
 }
@@ -99,7 +87,7 @@ export const deleteDjin = (id) => dispatch => {
 // pin Djin
 export const UPDATE_DJIN_PIN = 'UPDATE_DJIN_PIN';
 
-const updateDjin = object => ({
+const updatePinDjin = object => ({
   type: UPDATE_DJIN_PIN,
   payload: object,
 });
@@ -117,7 +105,33 @@ const tryPinUpdateDjin = (person, id) => ({
 export const pinDjin = (person, id) => dispatch => {
   dispatch(tryPinUpdateDjin(person, id));
   axios.post('/api/djin/pin', { person, id }).then(res => res.data).then(data=>{
-    console.log(data);
-    dispatch(updateDjin(data));
+    
+    dispatch(updatePinDjin(data));
+  })
+}
+
+// ============================================================
+// like Djin
+export const UPDATE_DJIN_LIKE = 'UPDATE_DJIN_LIKE';
+
+const updateLikeDjin = object => ({
+  type: UPDATE_DJIN_LIKE,
+  payload: object,
+});
+
+export const TRY_LIKE_UPDATE = 'TRY_LIKE_UPDATE';
+
+const tryLikeUpdateDjin = (person, id) => ({
+  type: TRY_LIKE_UPDATE,
+  payload: {
+    person, 
+    id
+  } 
+})
+
+export const likeDjin = (person, id) => dispatch => {
+  dispatch(tryLikeUpdateDjin(person, id));
+  axios.post('/api/djin/like', { person, id }).then(res => res.data).then(data=>{
+    dispatch(updateLikeDjin(data));
   })
 }

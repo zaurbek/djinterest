@@ -36,7 +36,7 @@ const TwitterStrategy = passportTwitter.Strategy;
 passport.use(new TwitterStrategy({
   consumerKey: process.env.CONSUMER_KEY,
   consumerSecret: process.env.CONSUMER_SECRET,
-  callbackURL: 'http://127.0.0.1:8080/login/twitter/return',
+  callbackURL: 'https://djinterest.herokuapp.com/login/twitter/return',
 }, (token, tokenSecret, profile, cb) => cb(null, profile)));
 
 passport.serializeUser((user, cb) => {
@@ -61,18 +61,44 @@ app.use(passport.session());
 
 // ============================================================
 // routes
-app.post('/api/djin/pin', (req,res)=>{
+app.post('/api/djin/like', (req,res)=>{
   Pin.findOne({id: req.body.id}).then(singleNode=>{
-    if (singleNode.pins.indexOf(req.body.person)<0) {
-      Pin.findOneAndUpdate({id: req.body.id},{$push:{pins: req.body.person }},{ returnNewDocument: true }).then(updatedNode=>{
+    if (singleNode.likes.indexOf(req.body.person)<0) {
+      Pin.findOneAndUpdate({id: req.body.id},{$push:{likes: req.body.person }},{ returnNewDocument: true },(updatedNode)=>{
         console.log('if already wasn"t present');
+        console.log('====================================');
         console.log(updatedNode);
+        console.log('====================================');
         res.send(updatedNode);
       })
     } else {
-      Pin.findOneAndUpdate({id: req.body.id}, { $pullAll: { pins: [req.body.person] } }, { returnNewDocument: true }).then(updatedNode=>{
+      Pin.findOneAndUpdate({id: req.body.id}, { $pullAll: { likes: [req.body.person] } }, { returnNewDocument: true }, (updatedNode)=>{
         console.log('if already was present');
+        console.log('====================================');
         console.log(updatedNode);
+        console.log('====================================');
+        res.send(updatedNode);
+      })
+    } 
+  })
+})
+
+app.post('/api/djin/pin', (req,res)=>{
+  Pin.findOne({id: req.body.id}).then(singleNode=>{
+    if (singleNode.pins.indexOf(req.body.person)<0) {
+      Pin.findOneAndUpdate({id: req.body.id},{$push:{pins: req.body.person }},{ returnNewDocument: true },(updatedNode)=>{
+        console.log('if already wasn"t present');
+        console.log('====================================');
+        console.log(updatedNode);
+        console.log('====================================');
+        res.send(updatedNode);
+      })
+    } else {
+      Pin.findOneAndUpdate({id: req.body.id}, { $pullAll: { pins: [req.body.person] } }, { returnNewDocument: true }, (updatedNode)=>{
+        console.log('if already was present');
+        console.log('====================================');
+        console.log(updatedNode);
+        console.log('====================================');
         res.send(updatedNode);
       })
     } 
