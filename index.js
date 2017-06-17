@@ -107,7 +107,7 @@ app.post('/api/djin/pin', (req,res)=>{
 
 
 app.post('/api/djin/delete', (req,res)=> {
-  Pin.remove({id:req.body.id+'asdasd'},(err,result)=>{
+  Pin.remove({id:req.body.id},(err,result)=>{
     if (err) {
       console.log(err);
     }
